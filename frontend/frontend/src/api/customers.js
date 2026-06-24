@@ -1,43 +1,43 @@
+import axios from 'axios';
+
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
+const api = axios.create({
+  baseURL: API_URL,
+});
+
+// Add token to requests if available
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 export const getCustomers = async () => {
-  const response = await fetch(`${API_URL}/customers`);
-  if (!response.ok) throw new Error('Failed to fetch customers');
-  return response.json();
+  const response = await api.get('/customers');
+  return response.data;
 };
 
 export const getCustomer = async (id) => {
-  const response = await fetch(`${API_URL}/customers/${id}`);
-  if (!response.ok) throw new Error('Failed to fetch customer');
-  return response.json();
+  const response = await api.get(`/customers/${id}`);
+  return response.data;
 };
 
 export const createCustomer = async (customer) => {
-  const response = await fetch(`${API_URL}/customers`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(customer),
-  });
-  if (!response.ok) throw new Error('Failed to create customer');
-  return response.json();
+  const response = await api.post('/customers', customer);
+  return response.data;
 };
 
 export const deleteCustomer = async (id) => {
-  const response = await fetch(`${API_URL}/customers/${id}`, {
-    method: 'DELETE',
-  });
-  if (!response.ok) throw new Error('Failed to delete customer');
-  return response.json();
+  const response = await api.delete(`/customers/${id}`);
+  return response.data;
 };
 
 export const updateCustomer = async (id, customer) => {
-  const response = await fetch(`${API_URL}/customers/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(customer),
-  });
-  if (!response.ok) throw new Error('Failed to update customer');
-  return response.json();
+  const response = await api.put(`/customers/${id}`, customer);
+  return response.data;
 };
 
 export default {

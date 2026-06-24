@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, LogOut } from 'lucide-react';
 import { productsAPI, customersAPI, ordersAPI, dashboardAPI } from './api';
 import Header from './components/Header';
 import Navigation from './components/Navigation';
@@ -8,8 +8,10 @@ import ProductsView from './components/ProductsView';
 import CustomersView from './components/CustomersView';
 import OrdersView from './components/OrdersView';
 import Loading from './components/Loading';
+import Login from './components/Login';
 
 export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [products, setProducts] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [orders, setOrders] = useState([]);
@@ -19,8 +21,28 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
 
   useEffect(() => {
-    loadData();
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsAuthenticated(true);
+      loadData();
+    } else {
+      setLoading(false);
+    }
   }, []);
+
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+    loadData();
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsAuthenticated(false);
+    setProducts([]);
+    setCustomers([]);
+    setOrders([]);
+    setDashboard(null);
+  };
 
   const loadData = async () => {
     try {
@@ -43,10 +65,23 @@ export default function App() {
     }
   };
 
+  if (!isAuthenticated) {
+    return <Login onLogin={handleLogin} />;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 text-gray-800">
       <Header error={error} />
-      <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
+      <div className="flex justify-between items-center px-4 sm:px-6 lg:px-8 py-4 bg-white border-b">
+        <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
+        <button
+          onClick={handleLogout}
+          className="flex items-center px-4 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md"
+        >
+          <LogOut className="h-4 w-4 mr-2" />
+          Logout
+        </button>
+      </div>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {loading && <Loading />}
