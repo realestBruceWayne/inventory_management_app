@@ -1,0 +1,23 @@
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+startCommand = "cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT"
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+
+[[services]]
+name = "inventory-api"
+env = "PYTHON_VERSION=3.10"
+
+[[services.ports]]
+port = 8000
+handlers = ["http"]
+
+[variables]
+DATABASE_URL = "${{ postgres.DATABASE_URL }}"
+SECRET_KEY = "${{ secrets.SECRET_KEY }}"
+API_KEY = "${{ secrets.API_KEY }}"
+
+[[databases]]
+name = "inventory-db"
