@@ -242,3 +242,11 @@ The system is ready for deployment with:
 
 ## Summary
 The Inventory & Order Management System is now fully compliant with all requirements from REQUIREMENTS.md. All identified issues have been resolved, and the codebase follows SOLID principles throughout. The system is modular, maintainable, and ready for deployment to production environments.
+
+## Deployment ToDos
+- [ ] Deploy backend to free platform (Render/Railway/Fly.io)
+- [ ] Deploy frontend to free platform (Vercel/Netlify)
+- [ ] Configure environment variables for backend deployment
+- [ ] Configure environment variables for frontend deployment
+- [ ] Test frontend-backend communication on deployed URLs
+- [ ] Verify deployed URLs are publicly accessible
