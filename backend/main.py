@@ -43,27 +43,22 @@ class LoginRequest(BaseModel):
     username: str
     password: str
 
-# Simple user database (in production, use a real database)
-USERS_DB = {
-    "ethara.ai": {
-        "username": "ethara.ai",
-        "password_hash": get_password_hash("etharaAI@2026#")  # Change in production!
-    }
-}
+# User credentials from environment variables
+ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
+ADMIN_PASSWORD_HASH = get_password_hash(os.getenv("ADMIN_PASSWORD", "admin"))
 
 @app.post("/token")
 @limiter.limit(auth_rate_limit)
 def login(request: Request, login_data: LoginRequest):
     """Simple authentication endpoint - returns JWT token"""
-    user = USERS_DB.get(login_data.username)
-    if not user or not verify_password(login_data.password, user["password_hash"]):
+    if login_data.username != ADMIN_USERNAME or not verify_password(login_data.password, ADMIN_PASSWORD_HASH):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
     
-    access_token = create_access_token(data={"sub": user["username"]})
+    access_token = create_access_token(data={"sub": ADMIN_USERNAME})
     return {"access_token": access_token, "token_type": "bearer"}
 
 @app.get("/")
