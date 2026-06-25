@@ -258,3 +258,32 @@ The Inventory & Order Management System is now fully compliant with all requirem
 - ✅ Added requirements.txt to root directory
 - ✅ Configured build commands for both platforms
 - ✅ Set up environment variable references
+- ✅ Pushed deployment configurations to GitHub
+
+## Next Steps for Deployment
+
+The deployment configurations are complete and ready. Follow the detailed guide in `DEPLOYMENT.md` to deploy the application:
+
+### Step 1: Deploy Backend to Render
+1. Go to [render.com](https://render.com) and create/connect your account
+2. Click "New +" → "Web Service"
+3. Connect your GitHub repository: `realestBruceWayne/inventory_management_app`
+4. Render will automatically detect `render.yaml` configuration
+5. Click "Deploy Web Service"
+6. Save the backend URL provided by Render
+
+### Step 2: Deploy Frontend to Vercel
+1. Go to [vercel.com](https://vercel.com) and create/connect your account
+2. Click "Add New..." → "Project"
+3. Import your GitHub repository
+4. Configure:
+   - Root Directory: `frontend/frontend`
+   - Build Command: `npm run build`
+   - Output Directory: `dist`
+5. Add environment variable: `VITE_API_URL` = (your Render backend URL)
+6. Click "Deploy"
+
+### Step 3: Update Documentation
+After successful deployment, update the following with your actual URLs:
+- DEPLOYMENT.md - Fill in the URLs section at the bottom
+- REVIEW_SUMMARY.md - Mark deployment ToDos as completed
