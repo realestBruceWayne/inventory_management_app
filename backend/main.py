@@ -9,8 +9,9 @@ from auth import create_access_token, verify_password, get_password_hash
 from pydantic import BaseModel
 import os
 
-# Initialize Database
-Base.metadata.create_all(bind=engine)
+# Initialize Database only if engine is available
+if engine is not None:
+    Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="Inventory & Order Management System",
