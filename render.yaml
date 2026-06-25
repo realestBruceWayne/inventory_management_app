@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: inventory-management-api
+    name: inventory_management_app
     env: python
     plan: free
     buildCommand: pip install -r requirements.txt
