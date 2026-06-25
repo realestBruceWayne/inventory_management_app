@@ -8,9 +8,12 @@ export default function ProductsView({ products, onRefresh }) {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [formData, setFormData] = useState({ name: '', sku: '', price: '', quantity: '' });
+  const [addError, setAddError] = useState('');
+  const [editError, setEditError] = useState('');
 
   const handleAdd = async (e) => {
     e.preventDefault();
+    setAddError('');
     try {
       await productsAPI.createProduct({
         name: formData.name,
@@ -22,12 +25,13 @@ export default function ProductsView({ products, onRefresh }) {
       setFormData({ name: '', sku: '', price: '', quantity: '' });
       onRefresh();
     } catch (err) {
-      alert(err.message);
+      setAddError(err.message);
     }
   };
 
   const handleEdit = async (e) => {
     e.preventDefault();
+    setEditError('');
     try {
       await productsAPI.updateProduct(selectedProduct.id, {
         name: formData.name,
@@ -40,7 +44,7 @@ export default function ProductsView({ products, onRefresh }) {
       setFormData({ name: '', sku: '', price: '', quantity: '' });
       onRefresh();
     } catch (err) {
-      alert(err.message);
+      setEditError(err.message);
     }
   };
 
@@ -136,6 +140,11 @@ export default function ProductsView({ products, onRefresh }) {
       {showAddModal && (
         <Modal onClose={() => setShowAddModal(false)} title="Add Product">
           <form onSubmit={handleAdd} className="space-y-5">
+            {addError && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                {addError}
+              </div>
+            )}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Product Name</label>
               <input
@@ -208,6 +217,11 @@ export default function ProductsView({ products, onRefresh }) {
       {showEditModal && (
         <Modal onClose={() => setShowEditModal(false)} title="Edit Product">
           <form onSubmit={handleEdit} className="space-y-5">
+            {editError && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                {editError}
+              </div>
+            )}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Product Name</label>
               <input

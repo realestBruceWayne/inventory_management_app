@@ -15,6 +15,17 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// Helper function to extract error message from axios error
+const getErrorMessage = (error) => {
+  if (error.response && error.response.data && error.response.data.detail) {
+    return error.response.data.detail;
+  }
+  if (error.message) {
+    return error.message;
+  }
+  return 'An unexpected error occurred';
+};
+
 export const getCustomers = async () => {
   const response = await api.get('/customers');
   return response.data;
@@ -26,18 +37,30 @@ export const getCustomer = async (id) => {
 };
 
 export const createCustomer = async (customer) => {
-  const response = await api.post('/customers', customer);
-  return response.data;
+  try {
+    const response = await api.post('/customers', customer);
+    return response.data;
+  } catch (error) {
+    throw new Error(getErrorMessage(error));
+  }
 };
 
 export const deleteCustomer = async (id) => {
-  const response = await api.delete(`/customers/${id}`);
-  return response.data;
+  try {
+    const response = await api.delete(`/customers/${id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(getErrorMessage(error));
+  }
 };
 
 export const updateCustomer = async (id, customer) => {
-  const response = await api.put(`/customers/${id}`, customer);
-  return response.data;
+  try {
+    const response = await api.put(`/customers/${id}`, customer);
+    return response.data;
+  } catch (error) {
+    throw new Error(getErrorMessage(error));
+  }
 };
 
 export default {

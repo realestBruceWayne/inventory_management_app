@@ -8,6 +8,7 @@ export default function OrdersView({ orders, onRefresh }) {
   const [formData, setFormData] = useState({ customer_id: '', product_id: '', quantity: '' });
   const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);
+  const [addError, setAddError] = useState('');
 
   const loadDropdownData = async () => {
     try {
@@ -21,6 +22,7 @@ export default function OrdersView({ orders, onRefresh }) {
 
   const handleAdd = async (e) => {
     e.preventDefault();
+    setAddError('');
     try {
       await ordersAPI.createOrder({
         customer_id: parseInt(formData.customer_id),
@@ -31,7 +33,7 @@ export default function OrdersView({ orders, onRefresh }) {
       setFormData({ customer_id: '', product_id: '', quantity: '' });
       onRefresh();
     } catch (err) {
-      alert(err.message);
+      setAddError(err.message);
     }
   };
 
@@ -105,6 +107,11 @@ export default function OrdersView({ orders, onRefresh }) {
       {showAddModal && (
         <Modal onClose={() => setShowAddModal(false)} title="Create Order">
           <form onSubmit={handleAdd} className="space-y-5">
+            {addError && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                {addError}
+              </div>
+            )}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Customer</label>
               <select

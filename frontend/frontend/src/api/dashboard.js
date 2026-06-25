@@ -15,9 +15,24 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// Helper function to extract error message from axios error
+const getErrorMessage = (error) => {
+  if (error.response && error.response.data && error.response.data.detail) {
+    return error.response.data.detail;
+  }
+  if (error.message) {
+    return error.message;
+  }
+  return 'An unexpected error occurred';
+};
+
 export const getDashboardSummary = async () => {
-  const response = await api.get('/dashboard/summary');
-  return response.data;
+  try {
+    const response = await api.get('/dashboard/summary');
+    return response.data;
+  } catch (error) {
+    throw new Error(getErrorMessage(error));
+  }
 };
 
 export default {

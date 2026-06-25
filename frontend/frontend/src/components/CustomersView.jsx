@@ -8,21 +8,25 @@ export default function CustomersView({ customers, onRefresh }) {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [formData, setFormData] = useState({ full_name: '', email: '', phone: '' });
+  const [addError, setAddError] = useState('');
+  const [editError, setEditError] = useState('');
 
   const handleAdd = async (e) => {
     e.preventDefault();
+    setAddError('');
     try {
       await customersAPI.createCustomer(formData);
       setShowAddModal(false);
       setFormData({ full_name: '', email: '', phone: '' });
       onRefresh();
     } catch (err) {
-      alert(err.message);
+      setAddError(err.message);
     }
   };
 
   const handleEdit = async (e) => {
     e.preventDefault();
+    setEditError('');
     try {
       await customersAPI.updateCustomer(selectedCustomer.id, formData);
       setShowEditModal(false);
@@ -30,7 +34,7 @@ export default function CustomersView({ customers, onRefresh }) {
       setFormData({ full_name: '', email: '', phone: '' });
       onRefresh();
     } catch (err) {
-      alert(err.message);
+      setEditError(err.message);
     }
   };
 
@@ -111,6 +115,11 @@ export default function CustomersView({ customers, onRefresh }) {
       {showAddModal && (
         <Modal onClose={() => setShowAddModal(false)} title="Add Customer">
           <form onSubmit={handleAdd} className="space-y-5">
+            {addError && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                {addError}
+              </div>
+            )}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
               <input
@@ -165,6 +174,11 @@ export default function CustomersView({ customers, onRefresh }) {
       {showEditModal && (
         <Modal onClose={() => setShowEditModal(false)} title="Edit Customer">
           <form onSubmit={handleEdit} className="space-y-5">
+            {editError && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                {editError}
+              </div>
+            )}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
               <input
