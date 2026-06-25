@@ -72,9 +72,6 @@ const Login = ({ onLogin }) => {
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
-        <p className="mt-4 text-sm text-gray-600 text-center">
-          Demo credentials: admin / admin123
-        </p>
       </div>
     </div>
   );

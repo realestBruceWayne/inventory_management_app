@@ -45,9 +45,9 @@ class LoginRequest(BaseModel):
 
 # Simple user database (in production, use a real database)
 USERS_DB = {
-    "admin": {
-        "username": "admin",
-        "password_hash": get_password_hash("admin123")  # Change in production!
+    "ethara.ai": {
+        "username": "ethara.ai",
+        "password_hash": get_password_hash("etharaAI@2026#")  # Change in production!
     }
 }
 
