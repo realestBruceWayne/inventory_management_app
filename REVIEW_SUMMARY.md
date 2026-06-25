@@ -243,13 +243,17 @@ The system is ready for deployment with:
 ## Summary
 The Inventory & Order Management System is now fully compliant with all requirements from REQUIREMENTS.md. All identified issues have been resolved, and the codebase follows SOLID principles throughout. The system is modular, maintainable, and ready for deployment to production environments.
 
-## Deployment ToDos
-- [ ] Deploy backend to free platform (Render/Railway/Fly.io)
-- [ ] Deploy frontend to free platform (Vercel/Netlify)
-- [ ] Configure environment variables for backend deployment
-- [ ] Configure environment variables for frontend deployment
+## Deployment ToDos (Manual Steps Required)
+The following deployment steps require manual interaction with the hosting platforms:
+
+- [ ] Deploy backend to Render (follow DEPLOYMENT.md Step 1)
+- [ ] Deploy frontend to Vercel (follow DEPLOYMENT.md Step 2)
+- [ ] Configure VITE_API_URL environment variable in Vercel
+- [ ] Test backend health endpoint at deployed URL
 - [ ] Test frontend-backend communication on deployed URLs
 - [ ] Verify deployed URLs are publicly accessible
+- [ ] Update DEPLOYMENT.md with actual deployed URLs
+- [ ] Mark deployment ToDos in this section as completed
 
 ## Deployment Configuration Completed ✅
 - ✅ Updated render.yaml for Render deployment
@@ -286,4 +290,4 @@ The deployment configurations are complete and ready. Follow the detailed guide 
 ### Step 3: Update Documentation
 After successful deployment, update the following with your actual URLs:
 - DEPLOYMENT.md - Fill in the URLs section at the bottom
-- REVIEW_SUMMARY.md - Mark deployment ToDos as completed
+- REVIEW_SUMMARY.md - Mark the deployment ToDos (above) as completed
